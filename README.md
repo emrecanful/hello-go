@@ -1,6 +1,6 @@
 # hello-go
 
-A tiny Go web app for trying out [CommyPanel](https://github.com/commypanel/commypanel). Standard library only; no dependencies.
+A tiny Go web app for trying out [CommyPanel](https://github.com/emrecanful/commypanel). Standard library only; no dependencies.
 
 | Path | What it returns |
 |---|---|
