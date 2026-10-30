@@ -5,6 +5,7 @@ A tiny Go web app for trying out [CommyPanel](https://github.com/emrecanful/comm
 | Path | What it returns |
 |---|---|
 | `/` | a small HTML page (greeting, version, container name, uptime) |
+| `/about` | a second page (added in 1.1.0 to try a redeploy) |
 | `/info` | the same facts as JSON |
 | `/health` | `ok` |
 

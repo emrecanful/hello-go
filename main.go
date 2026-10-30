@@ -3,6 +3,7 @@
 // It listens on $PORT (default 8080) and answers:
 //
 //	/        a small HTML page
+//	/about   a second page, added in 1.1.0 to try a redeploy
 //	/info    the same facts as JSON
 //	/health  "ok" (point CommyPanel's health check here)
 //
@@ -22,7 +23,7 @@ import (
 )
 
 // Change this, commit and push, then press Deploy to see a new release go live.
-const version = "1.0.0"
+const version = "1.1.0"
 
 var started = time.Now()
 
@@ -74,9 +75,30 @@ func main() {
 <h1>%[1]s</h1>
 <p>Version <strong>%[2]s</strong> of <code>%[3]s</code>.</p>
 <p>Container: <code>%[4]s</code><br>Up for: %[5]s</p>
+<p>New in 1.1.0: <a href="/about">the about page</a>.</p>
 </body>
 </html>
 `, html.EscapeString(i.Greeting), html.EscapeString(i.Version), html.EscapeString(i.App), html.EscapeString(i.Hostname), html.EscapeString(i.Uptime))
+	})
+	mux.HandleFunc("GET /about", func(w http.ResponseWriter, r *http.Request) {
+		i := current()
+		log.Printf("%s %s", r.Method, r.URL.Path)
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		fmt.Fprintf(w, `<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>About %[1]s</title></head>
+<body style="font-family: system-ui, sans-serif; max-width: 40rem; margin: 4rem auto; padding: 0 1rem">
+<h1>About</h1>
+<p><code>%[1]s</code> is a tiny Go app used to try out CommyPanel. You are looking at version <strong>%[2]s</strong>,
+served by container <code>%[3]s</code>.</p>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/info">/info</a> (JSON)</li>
+<li><a href="/health">/health</a></li>
+</ul>
+</body>
+</html>
+`, html.EscapeString(i.App), html.EscapeString(i.Version), html.EscapeString(i.Hostname))
 	})
 	mux.HandleFunc("GET /info", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s %s", r.Method, r.URL.Path)
