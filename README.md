@@ -6,6 +6,7 @@ A tiny Go web app for trying out [CommyPanel](https://github.com/emrecanful/comm
 |---|---|
 | `/` | a small HTML page (greeting, version, container name, uptime) |
 | `/about` | a second page (added in 1.1.0 to try a redeploy) |
+| `/zero-downtime` | a live page that polls `/info` every 300 ms (added in 1.2.0), to watch a deploy switch |
 | `/info` | the same facts as JSON |
 | `/health` | `ok` |
 
@@ -29,6 +30,7 @@ PORT=3000 go run .  # another port
 ## Things worth trying
 
 - **Redeploy:** change `version` in `main.go`, commit, push, press Deploy. The new version goes live and the page shows a new container name.
+- **Zero downtime:** open `/zero-downtime` in a browser, then deploy a new version. The container name changes once and the *Failed* counter stays at 0 if no request was dropped during the switch.
 - **Environment variables:** add `GREETING` = `Hello, world!` on the app page, then deploy. The page headline changes.
 - **A failing deploy:** add `FAIL_STARTUP` = `1`, then deploy. The new version never answers, the deploy fails, and the previous version keeps serving. Remove the variable and deploy again.
 - **Rollback:** after two successful deploys, use "Roll back to this" on the older release.
